@@ -12,18 +12,23 @@
 """
 import click
 
-from utilities import read_data_from_file, make_svg_from_data
+from utilities import get_filtered_elements_width_and_color_from_events, make_svg_from_data
 
 
 @click.command()
 @click.argument('start_time', type=click.IntRange(min=0))
 @click.argument('end_time', type=click.IntRange(min=0))
-@click.argument('input_data_file', type=click.File())
-@click.argument('output_svg_file', type=click.Path())
+@click.argument('input_data_file', type=click.File('r'))
+@click.argument('output_svg_file', type=click.File('w'))
 def app(start_time, end_time, input_data_file, output_svg_file):
-    list_of_filtered_events_width = read_data_from_file(input_data_file, start_time, end_time)
-    total_width = end_time - start_time
-    make_svg_from_data(list_of_filtered_events_width, total_width)
-
+    try:
+        list_of_graph_elements = get_filtered_elements_width_and_color_from_events(input_data_file,
+                                                                                   start_time,
+                                                                                   end_time)
+        total_width = end_time - start_time
+        make_svg_from_data(list_of_graph_elements, total_width)
+    except Exception, e:
+        print('Error: {0}'.format(e))
+        exit(1)
 if __name__ == '__main__':
     app()

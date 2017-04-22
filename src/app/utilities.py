@@ -13,6 +13,7 @@
 import ast
 import svgwrite
 
+
 def _bool_to_string_color(bool_value):
     if bool_value:
         return 'green'
@@ -20,40 +21,40 @@ def _bool_to_string_color(bool_value):
 
 
 def _get_timestamp_and_status_color_from_event_string(data_string):
-    split_data = data_string.split()
-    time_stamp = int(split_data[0])
-    status_color = _bool_to_string_color(ast.literal_eval(split_data[1]))
+    try:
+        split_data = data_string.split()
+        time_stamp = int(split_data[0])
+        status_color = _bool_to_string_color(ast.literal_eval(split_data[1]))
+    except Exception:
+        raise (Exception('Invalid event record: {0}'.format(data_string)))
+
     return time_stamp, status_color
 
 
-def read_data_from_file(input_file, start_time, end_time):
+def get_filtered_elements_width_and_color_from_events(events_list, start_time, end_time):
     filtered_data_list = []
     last_read_timestamp = start_time
     last_status = 'white'
     # todo: write comment why white is used!
     width = 0
-    try:
-        for line in input_file:
-            time_stamp, status_color = _get_timestamp_and_status_color_from_event_string(line)
-            if time_stamp > end_time:
-                break
 
-            if time_stamp >= start_time:
-                width += time_stamp - last_read_timestamp
-                if last_status != status_color:
-                        filtered_data_list.append([width, last_status])
-                        width = 0
+    for event in events_list:
+        time_stamp, status_color = _get_timestamp_and_status_color_from_event_string(event)
+        if time_stamp > end_time:
+            break
 
-                last_read_timestamp = time_stamp
-                last_status = status_color
+        if time_stamp >= start_time:
+            width += time_stamp - last_read_timestamp
+            if last_status != status_color and width > 0:
+                filtered_data_list.append([width, last_status])
+                width = 0
 
-        width += end_time - last_read_timestamp
-        if width > 0:
-            filtered_data_list.append([width, last_status])
+            last_read_timestamp = time_stamp
+            last_status = status_color
 
-    except Exception, e:
-        print('Incorrect datafile format! {0}'.format(e))
-        exit()
+    width += end_time - last_read_timestamp
+    if width > 0:
+        filtered_data_list.append([width, last_status])
 
     return filtered_data_list
 

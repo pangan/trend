@@ -35,7 +35,6 @@ def get_filtered_elements_width_and_color_from_events(events_list, start_time, e
     filtered_data_list = []
     last_read_timestamp = start_time
     last_status = 'white'
-    # todo: write comment why white is used!
     width = 0
 
     for event in events_list:
@@ -50,7 +49,8 @@ def get_filtered_elements_width_and_color_from_events(events_list, start_time, e
                 width = 0
 
             last_read_timestamp = time_stamp
-            last_status = status_color
+
+        last_status = status_color
 
     width += end_time - last_read_timestamp
     if width > 0:
@@ -66,8 +66,9 @@ def make_svg_from_data(list_of_data, total_width):
     dwg.viewbox(0, 0, maximum_viewbox_width, 50)
     last_width = 0
     for width, status_color in list_of_data:
-        percentage_width = width * maximum_viewbox_width / total_width
-        dwg.add(dwg.rect((last_width, 0), (percentage_width, 50), fill=status_color))
-        last_width += percentage_width
+        graph_element_width = width * maximum_viewbox_width / total_width
+        dwg.add(dwg.rect((last_width, 0), (graph_element_width, 50), fill=status_color))
+        last_width += graph_element_width
+
 
     dwg.save()

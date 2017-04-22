@@ -4,7 +4,7 @@
     ==============================
 
     A collection of utilities used by main application.
-    
+
     ----
 
     .. moduleauthor:: Amir Mofakhar <pangan@gmail.com>
@@ -59,9 +59,8 @@ def get_filtered_elements_width_and_color_from_events(events_list, start_time, e
     return filtered_data_list
 
 
-def make_svg_from_data(list_of_data, total_width):
-    # todo: make output file from parameter!
-    dwg = svgwrite.Drawing('test.svg')
+def make_svg_from_data(list_of_data, total_width, output_file):
+    dwg = svgwrite.Drawing(output_file)
     maximum_viewbox_width = 500.0
     dwg.viewbox(0, 0, maximum_viewbox_width, 50)
     last_width = 0
@@ -69,6 +68,5 @@ def make_svg_from_data(list_of_data, total_width):
         graph_element_width = width * maximum_viewbox_width / total_width
         dwg.add(dwg.rect((last_width, 0), (graph_element_width, 50), fill=status_color))
         last_width += graph_element_width
-
 
     dwg.save()

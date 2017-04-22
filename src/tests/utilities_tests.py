@@ -12,6 +12,8 @@
 """
 from random import randrange
 
+from testfixtures import TempDirectory
+
 from ..app.utilities import (_bool_to_string_color,
                              _get_timestamp_and_status_color_from_event_string,
                              get_filtered_elements_width_and_color_from_events,
@@ -46,7 +48,7 @@ class UtilitiesTestCase(AppTestCase):
     def test_get_filtered_status_width_and_color_from_file_return_correct_values(self):
         """Test get_filtered_status_width_and_color_from_file returns correct values"""
         test_data_list = [
-            {'events':['2 True', '5 False', '7 True'],
+            {'events': ['2 True', '5 False', '7 True'],
              'start': 2,
              'end': 7,
              'expected': [[3, 'green'], [2, 'red']]
@@ -74,10 +76,17 @@ class UtilitiesTestCase(AppTestCase):
             self.assertItemsEqual(test_data['expected'], test_elements)
 
     def test_make_svg_from_data_creates_output_file(self):
-        """todo:write comment"""
+        """Test make_svg_from_data creates correct output file"""
         test_data = [
-            [1, 'green'],
-            [2, 'red']
+            [2, 'green'],
+            [3, 'red']
         ]
-        make_svg_from_data(test_data, 3)
-        pass
+        expected_xml_tags = [
+            '<rect fill="green" height="50" width="200.0" x="0" y="0" />',
+            '<rect fill="red" height="50" width="300.0" x="200.0" y="0" />'
+        ]
+        with TempDirectory() as output_path:
+            make_svg_from_data(test_data, 5, '{0}/test.svg'.format(output_path.path))
+            created_file_content = output_path.read('test.svg')
+            for element_tag in expected_xml_tags:
+                self.assertIn(element_tag, created_file_content)

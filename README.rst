@@ -44,7 +44,7 @@ Running
 
 Below command shows the syntax usage:
 
-    (venv) $: python src/generate_trend_graph.py --help
+    (venv) $: python src/app/generate_trend_graph.py --help
 
 
 

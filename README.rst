@@ -51,6 +51,12 @@ Below command shows the syntax usage:
 Running Tests
 -------------
 
+Before running the tests, be sure all the files inside src/tests have below attribute:
+    -rw-r--r--
+
+If they have another attribute, run below command:
+    (venv) $: chmod 644 src/tests/*
+
 Below command runs the unit tests:
 
     (venv) $: nosetest -v src/tests

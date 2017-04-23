@@ -34,7 +34,7 @@ Installing
 * Active the virtual environment:
     $: source venv/bin/activate
 
-* Install requirments:
+* Install requirements:
     (venv) $: pip install -r requirments.txt
 
 It's ready to run.

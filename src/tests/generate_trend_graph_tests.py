@@ -43,8 +43,8 @@ class GenerateTrendGraphTestCase(AppTestCase):
             self.assertEqual(result.exit_code, 1, msg=result.exception)
 
     def test_non_zero_exit_code_for_end_time_less_than_start_time(self):
-        """Test click application returns non zero exit code if 
-        end_time is less than start_time """
+        """Test click application returns non zero exit code if
+         end_time is less than start_time """
         runner = CliRunner()
         with TempDirectory() as test_dir:
             test_dir.write('test.txt', '1 True')

@@ -67,6 +67,11 @@ class UtilitiesTestCase(AppTestCase):
              'start': 1,
              'end': 6,
              'expected': [[1, 'white'], [3, 'green'], [1, 'red']]
+             },
+            {'events': ['2 True', '5 True', '7 True'],
+             'start': 2,
+             'end': 7,
+             'expected': [[5, 'green']]
              }
         ]
         for test_data in test_data_list:
@@ -82,8 +87,8 @@ class UtilitiesTestCase(AppTestCase):
             [3, 'red']
         ]
         expected_xml_tags = [
-            '<rect fill="green" height="50" width="200.0" x="0" y="0" />',
-            '<rect fill="red" height="50" width="300.0" x="200.0" y="0" />'
+            '<rect fill="green" height="50" width="200.0" x="0" y="0"/>',
+            '<rect fill="red" height="50" width="300.0" x="200.0" y="0"/>'
         ]
         with TempDirectory() as output_path:
             make_svg_from_data(test_data, 5, '{0}/test.svg'.format(output_path.path))

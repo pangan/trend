@@ -60,13 +60,15 @@ def get_filtered_elements_width_and_color_from_events(events_list, start_time, e
 
 
 def make_svg_from_data(list_of_data, total_width, output_file):
-    dwg = svgwrite.Drawing(output_file)
+    output_svg = svgwrite.Drawing(output_file)
     maximum_viewbox_width = 500.0
-    dwg.viewbox(0, 0, maximum_viewbox_width, 50)
+    output_svg.viewbox(0, 0, maximum_viewbox_width, 50)
     last_width = 0
     for width, status_color in list_of_data:
         graph_element_width = width * maximum_viewbox_width / total_width
-        dwg.add(dwg.rect((last_width, 0), (graph_element_width, 50), fill=status_color))
+        output_svg.add(output_svg.rect((last_width, 0),
+                                       (graph_element_width, 50),
+                                       fill=status_color))
         last_width += graph_element_width
 
-    dwg.save()
+    output_svg.save(pretty=True)
